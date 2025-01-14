@@ -1,11 +1,12 @@
 import numpy as np
+import re
 
 
 #1 Your task is to make a function that can take any non-negative integer as an argument 
 #and return it with its digits in descending order. Essentially, rearrange the digits to create the highest possible number.
 def task1 (number):
-    b = sorted(number, reverse = True)
-    return b
+    b = sorted(str(number), reverse = True)
+    return int(''.join(b))
 
 def task2 (number):
     b = ''
@@ -21,7 +22,7 @@ def task3 (arr):
 
 def task4 (number): 
     count = 0
-    while number > 10:
+    while number >= 10:
         i = 1
         while number > 0:
             i *= number % 10 
@@ -55,13 +56,29 @@ def task6 (massiv):
         a = massiv[0] + ", " + massiv[1] + " and " + others + " others like this"
     return a
 
-def task7 (arr): #решить!!
-    n = m_a.shape
-    arr1 = []
-    arr1.append(arr[0])
-    for j in arr:
-        arr1.append([j[-1:-1]])
-    return arr1
+def task7 (map):
+    list = []
+    while map:
+        for i in map[0]:
+            list.append(i)
+        map.pop(0)
+        if not map:
+            break
+                    
+        for j in map:
+            list.append(j[-1])
+            j.pop()
+
+        for k in range(len(map[-1]) -1, -1, -1):
+            list.append(map[-1][k])
+        map.pop()
+        if not map:
+            break
+
+        for l in reversed(map):
+            list.append((l[0]))
+            l.pop(0)
+    return list
 
 def task8 (str):
     no = "aeiouAEIOU"
@@ -71,26 +88,32 @@ def task8 (str):
             result_string += char
     return result_string
 
-def task9 (str):
-    if len(str) == 6 or len(str) == 4 and str.isdigit():
-        a = True
-    else:
-        a = False
-    return a
+def task9 (pin):
+    return len(pin) in (4, 6) and pin.isdigit()
 
-def task10 (str):
-    x = ""
-    str2 = str.title()
-    x = str2.replace("_", " ")
-    x = str2.replace("-", " ")
+def task10 (text):
+    text = text.replace("-", " ").replace("_", " ")
+    words = text.split()
+    return "".join([w.capitalize() if w != words[0] else w for w in words])
 
-    no = " "
+def task11 (str):
+    str2 = ""
     result = ""
-    for char in x:
-        if char not in no:
-            result += char
-    return result
+    i = len(str)
+    while i > 0:
+        if i >= 2:
+            str2 = str[:2]
+            result += str2 + " "
+            str = str[2:]
+            i = len(str)
+        elif i == 1:
+            result += str[-1] + "_"
+            break
+    res = result.split()
+    return res
 
+def task12 (url):
+    return re.search('(https?://)?(www\d?\.)?(?P<name>[\w-]+)\.', url).group('name')
 
 
 m_a = np.array([[1, 2, 3, 4]
@@ -101,10 +124,11 @@ m_a = np.array([[1, 2, 3, 4]
 mass = ["Alex", "Jacob", "Mark", "Max" ]
 arr = [0, 1, 1, 1, 0]
 mynumber = input('Your number: ')
-mynumber1 = 999
+mynumber1 = 25
 mystr = input('Your word: ')
-pin = "916520"
-camel = "the-stealth-warrior"
+pin = "-16520"
+camel = "the_stealth_warrior"
+url = "https://www.cnet.com"
 
 result1 = task1(mynumber)
 result2 = task2(mynumber)
@@ -116,6 +140,8 @@ result7 = task7(m_a)
 result8 = task8(mystr)
 result9 = task9(pin)
 result10 = task10(camel)
+result11 = task11(mystr)
+result12 = task12(url)
 
 print('Task1: ', result1)
 print('Task2: ', result2)
@@ -127,3 +153,5 @@ print('Task7: ', result7)
 print('Task8: ', result8)
 print('Task9: ', result9)
 print('Task10: ', result10)
+print('Task11: ', result11)
+print('Task12: ', result12)
